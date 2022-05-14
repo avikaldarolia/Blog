@@ -43,3 +43,28 @@ export const signup = async (req, res, next) => {
   }
   return res.status(201).json({ user });
 };
+
+export const login = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  // if already exists
+  let existingUser;
+  try {
+    existingUser = await User.findOne({ email });
+  } catch (error) {
+    return console.log(error);
+  }
+  if (!existingUser) {
+    return res
+      .status(404)
+      .json({ message: "User doesn't exists! Sign-up instead" });
+  }
+
+  const isPasswordCorrect = bcrypt.compare(password, existingUser.password);
+
+  if (!isPasswordCorrect) {
+    return res.status(400).json({ message: 'Incorrect Password' });
+  }
+
+  return res.status(201).json({ message: 'Login Successfull' });
+};
