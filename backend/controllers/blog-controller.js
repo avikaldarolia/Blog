@@ -1,4 +1,6 @@
+import mongoose from 'mongoose';
 import Blog from '../models/Blog';
+import User from '../models/User';
 
 export const getAllBlogs = async (req, res, next) => {
   let blogs;
@@ -15,6 +17,15 @@ export const getAllBlogs = async (req, res, next) => {
 
 export const addBlog = async (req, res, next) => {
   const { title, image, description, user } = req.body;
+  let existingUser;
+  try {
+    existingUser = await User.findById(user);
+  } catch (error) {
+    return console.log(error);
+  }
+  if (!existingUser) {
+    return res.status(400).json({ message: 'Unable to find user by this ID' });
+  }
   const blog = new Blog({
     title,
     description,
@@ -22,9 +33,16 @@ export const addBlog = async (req, res, next) => {
     user,
   });
   try {
-    await blog.save();
+    // await blog.save();
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await blog.save({ session });
+    existingUser.blogs.push(blog);
+    await existingUser.save({ session });
+    await session.commitTransaction();
   } catch (error) {
-    return console.log(error);
+    console.log(error);
+    return res.status(500).json({ message: error });
   }
   return res.status(200).json({ blog });
 };
@@ -62,11 +80,13 @@ export const getById = async (req, res, next) => {
 };
 
 export const deleteBlog = async (req, res, next) => {
-  const blogId = req.params.id;
+  const id = req.params.id;
   let blog;
   // if it exists
   try {
-    blog = await Blog.findByIdAndRemove(blogId);
+    blog = await Blog.findByIdAndRemove(id).populate('user');
+    await blog.user.blogs.pull(blog);
+    await blog.user.save();
   } catch (error) {
     return console.log(error);
   }
