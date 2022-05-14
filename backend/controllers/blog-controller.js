@@ -33,7 +33,6 @@ export const addBlog = async (req, res, next) => {
     user,
   });
   try {
-    // await blog.save();
     const session = await mongoose.startSession();
     session.startTransaction();
     await blog.save({ session });
