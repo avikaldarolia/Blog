@@ -67,5 +67,7 @@ export const login = async (req, res, next) => {
     return res.status(400).json({ message: 'Incorrect Password' });
   }
 
-  return res.status(201).json({ message: 'Login Successfull' });
+  return res
+    .status(201)
+    .json({ message: 'Login Successfull', user: existingUser });
 };

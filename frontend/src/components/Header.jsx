@@ -9,9 +9,11 @@ import {
   Tab,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from '../store';
 
 const Header = () => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
@@ -62,6 +64,7 @@ const Header = () => {
               to="/auth"
               sx={{ margin: '1', borderRadius: 10 }}
               color="warning"
+              onClick={() => dispatch(authActions.logout())}
             >
               Logout
             </Button>
