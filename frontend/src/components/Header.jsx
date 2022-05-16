@@ -64,7 +64,11 @@ const Header = () => {
               to="/auth"
               sx={{ margin: '1', borderRadius: 10 }}
               color="warning"
-              onClick={() => dispatch(authActions.logout())}
+              onClick={() =>
+                dispatch(authActions.logout()).then(() =>
+                  localStorage.removeItem('userId')
+                )
+              }
             >
               Logout
             </Button>
