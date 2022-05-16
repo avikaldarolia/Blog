@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <AppBar position="sticky" sx={{ background: 'black' }}>
       <Toolbar>
-        <Typography varient="h4">Blogs App</Typography>
+        <Typography variant="h5">Blogs App</Typography>
         {isLoggedIn && (
           <Box display="flex" ml="auto">
             <Tabs
@@ -32,28 +32,28 @@ const Header = () => {
             </Tabs>
           </Box>
         )}
-        <Box display="flex" ml="auto">
+        <Box display="flex" ml="auto" justifyItems="legacy">
           {!isLoggedIn && (
-            <>
+            <Box>
               <Button
-                varient="contained"
+                // variant="contained"
                 LinkComponent={Link}
                 to="/auth"
-                sx={{ margin: '1', borderRadius: 10 }}
+                sx={{ margin: '1', borderRadius: 3 }}
                 color="warning"
               >
                 Login
               </Button>
               <Button
-                varient="contained"
+                // variant="contained"
                 LinkComponent={Link}
                 to="/auth"
-                sx={{ margin: '1', borderRadius: 10 }}
+                sx={{ margin: '1', borderRadius: 3 }}
                 color="warning"
               >
                 Signup
               </Button>
-            </>
+            </Box>
           )}
           {isLoggedIn && (
             <Button
