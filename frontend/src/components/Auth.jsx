@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, TextField } from '@mui/material';
+import axios from 'axios';
+
 const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [inputs, setInputs] = useState({
@@ -13,9 +15,26 @@ const Auth = () => {
       [e.target.name]: e.target.value,
     }));
   };
+  const sendRequest = async (type = 'login') => {
+    const res = await axios
+      .post(`http://localhost:5000/api/user/${type}`, {
+        name: inputs.name,
+        email: inputs.email,
+        password: inputs.password,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    return data;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
+    if (isSignUp) {
+      sendRequest('signup').then((data) => console.log(data, '234'));
+    } else {
+      sendRequest().then((data) => console.log(data, '123'));
+    }
   };
   return (
     <div>
