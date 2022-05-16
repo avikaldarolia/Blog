@@ -5,6 +5,8 @@ import Blog from './Blog';
 const UserBlogs = () => {
   const id = localStorage.getItem('userId');
   const [blogs, setBlogs] = useState();
+  const [username, setUsername] = useState('');
+
   const sendRequest = async () => {
     const res = await axios
       .get(`http://localhost:5000/api/blog/user/${id}`)
@@ -13,10 +15,13 @@ const UserBlogs = () => {
     return data;
   };
   useEffect(() => {
-    sendRequest().then((data) => setBlogs(data.blogs.blogs));
+    sendRequest().then((data) => {
+      setBlogs(data.blogs.blogs);
+      setUsername(data.blogs.name);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(blogs);
+  
   return (
     <div>
       {' '}
@@ -26,7 +31,7 @@ const UserBlogs = () => {
             title={blog.title}
             description={blog.description}
             imageUrl={blog.image}
-            userName={blog.user}
+            userName={username}
           />
         ))}
     </div>
