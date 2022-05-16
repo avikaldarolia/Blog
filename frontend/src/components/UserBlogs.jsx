@@ -21,13 +21,14 @@ const UserBlogs = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <div>
       {' '}
       {blogs &&
         blogs.map((blog, index) => (
           <Blog
+            key={index}
             title={blog.title}
             description={blog.description}
             imageUrl={blog.image}
