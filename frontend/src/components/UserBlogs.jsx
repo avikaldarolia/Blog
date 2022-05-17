@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Blog from './Blog';
@@ -19,9 +20,7 @@ const UserBlogs = () => {
       setBlogs(data.blogs.blogs);
       setUsername(data.blogs.name);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <div>
       {' '}
@@ -29,6 +28,8 @@ const UserBlogs = () => {
         blogs.map((blog, index) => (
           <Blog
             key={index}
+            id={blog._id}
+            isUser={true}
             title={blog.title}
             description={blog.description}
             imageUrl={blog.image}
